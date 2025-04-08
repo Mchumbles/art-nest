@@ -1,6 +1,6 @@
 "use client";
 
-//Victoria and Albert Museum Paintings
+// Victoria and Albert Museum
 
 import React, { useState, useEffect } from "react";
 
@@ -8,7 +8,8 @@ type Painting = {
   id: string;
   title: string;
   artist: string;
-  image: string;
+  image: string | null;
+  year: string | null;
 };
 
 const PaintingsPage = () => {
@@ -29,16 +30,19 @@ const PaintingsPage = () => {
 
         const data = await response.json();
 
-        const paintingsWithImages = data.records.map((painting: any) => ({
-          id: painting.systemNumber,
-          title: painting._primaryTitle || "Unknown",
-          artist: painting._primaryMaker?.name || "Unknown",
-          image: painting._primaryImageId
-            ? `https://framemark.vam.ac.uk/collections/${painting._primaryImageId}/full/full/0/default.jpg`
-            : null,
-        }));
+        const paintingsWithDetails = data.records.map((painting: any) => {
+          return {
+            id: painting.systemNumber,
+            title: painting._primaryTitle || "Unknown",
+            artist: painting._primaryMaker?.name || "Unknown",
+            image: painting._primaryImageId
+              ? `https://framemark.vam.ac.uk/collections/${painting._primaryImageId}/full/full/0/default.jpg`
+              : null,
+            year: painting._primaryDate || "Unknown",
+          };
+        });
 
-        setPaintings(paintingsWithImages);
+        setPaintings(paintingsWithDetails);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
@@ -64,6 +68,7 @@ const PaintingsPage = () => {
             <p>ID: {painting.id}</p>
             <h3>Title: {painting.title}</h3>
             <p>Artist: {painting.artist}</p>
+            <p>Year: {painting.year}</p>
             {painting.image ? (
               <img
                 src={painting.image}
