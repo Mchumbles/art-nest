@@ -2,8 +2,9 @@ import { fetchHarvardPaintings } from "@/api/harvard";
 import { fetchMetPaintings } from "@/api/met";
 import { fetchVamPaintings } from "@/api/vam";
 import { ArtObject } from "@/types/artworks";
+import ArtCard from "@/components/ArtCard";
 
-export default async function ArtworksPage() {
+export default async function paintings() {
   const [harvard, met, vam] = await Promise.all([
     fetchHarvardPaintings(),
     fetchMetPaintings(),
@@ -14,31 +15,11 @@ export default async function ArtworksPage() {
 
   return (
     <section>
-      <h1 className="text-3xl text-center mb-5 mt-5">All Artworks</h1>
-      <ul>
+      <h1 className="text-3xl text-center mb-5 mt-5">All Paintings</h1>
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allArtworks.map((artwork) => (
-          <li key={artwork.id} className="mb-6">
-            <h2 className="text-2xl font-semibold">Title: {artwork.title}</h2>
-            <p>Artist: {artwork.artist}</p>
-            <p>Date: {artwork.date}</p>
-            <p>Source: {artwork.source}</p>
-            {artwork.image ? (
-              <img
-                src={artwork.image}
-                alt={artwork.title}
-                className="w-[500px] my-4"
-              />
-            ) : (
-              <p>No image</p>
-            )}
-            <a
-              href={artwork.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600"
-            >
-              View on {artwork.source} website
-            </a>
+          <li key={artwork.id}>
+            <ArtCard artwork={artwork} />
           </li>
         ))}
       </ul>
