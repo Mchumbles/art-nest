@@ -14,7 +14,7 @@ export default async function ArtworksPage() {
 
   return (
     <section>
-      <h1 className="text-5xl text-center mb-6">All Artworks</h1>
+      <h1 className="text-3xl text-center mb-5 mt-5">All Artworks</h1>
       <ul>
         {allArtworks.map((artwork) => (
           <li key={artwork.id} className="mb-6">
