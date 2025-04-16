@@ -50,7 +50,7 @@ export async function fetchVamPaintings(): Promise<ArtObject[]> {
             ? `https://framemark.vam.ac.uk/collections/${painting._primaryImageId}/full/full/0/default.jpg`
             : null,
           url: `https://collections.vam.ac.uk/item/${painting.systemNumber}`,
-          source: "V&A",
+          source: "vam",
         };
         return artwork;
       })

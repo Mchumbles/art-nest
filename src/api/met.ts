@@ -68,7 +68,7 @@ export async function fetchMetPaintings(): Promise<ArtObject[]> {
           date: detailData.objectDate || "Unknown",
           image: detailData.primaryImageSmall || null,
           url: detailData.objectURL || "#",
-          source: "met",
+          source: "Met",
         };
 
         return artwork;
