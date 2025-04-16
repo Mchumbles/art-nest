@@ -3,7 +3,6 @@ export type ArtObject = {
   title: string;
   artist: string;
   date?: string | null;
-  year?: string | null;
   image: string | null;
   url: string;
   source: string;
@@ -16,3 +15,9 @@ export type VamPainting = {
   _primaryDate?: string;
   _primaryImageId?: string;
 };
+
+export type FilterSortProps = {
+  artworks: ArtObject[];
+};
+
+export type SortOption = "title" | "date" | "artist";
