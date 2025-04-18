@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { FilterSortProps } from "@/types/artworks";
-import { SortOption } from "@/types/artworks";
-import { ArtObject } from "@/types/artworks";
+import { useEffect, useState } from "react";
+import { fetchHarvardPaintings } from "@/api/harvard";
+import { fetchMetPaintings } from "@/api/met";
+import { fetchVamPaintings } from "@/api/vam";
+import { ArtObject, SortOption } from "@/types/artworks";
 import ArtCard from "@/components/ArtCard";
 
-export default function FilterSortBar({ artworks }: FilterSortProps) {
+export default function FilterSortBar() {
+  const [artworks, setArtworks] = useState<ArtObject[]>([]);
+  const [page, setPage] = useState(1);
+
   const [sortBy, setSortBy] = useState<SortOption>("title");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -15,6 +19,24 @@ export default function FilterSortBar({ artworks }: FilterSortProps) {
     Met: true,
     vam: true,
   });
+
+  const loadArtworks = async (pageNum: number) => {
+    const [harvard, met, vam] = await Promise.all([
+      fetchHarvardPaintings(pageNum),
+      fetchMetPaintings(pageNum),
+      fetchVamPaintings(pageNum),
+    ]);
+
+    setArtworks((prev) => [...prev, ...harvard, ...met, ...vam]);
+  };
+
+  useEffect(() => {
+    loadArtworks(page);
+  }, [page]);
+
+  const loadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
   const toggleSource = (source: string) => {
     setSourceFilter((prev) => ({
@@ -85,11 +107,17 @@ export default function FilterSortBar({ artworks }: FilterSortProps) {
 
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredArtworks.map((artwork) => (
-          <li key={artwork.id}>
+          <li key={`${artwork.source}-${artwork.id}`}>
             <ArtCard artwork={artwork} />
           </li>
         ))}
       </ul>
+
+      <div className="flex justify-center mt-6">
+        <button onClick={loadMore} className="p-3 mb-6 border ">
+          Load More
+        </button>
+      </div>
     </section>
   );
 }
