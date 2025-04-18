@@ -26,10 +26,10 @@ const queryParams = {
 };
 */
 
-export async function fetchVamPaintings(): Promise<ArtObject[]> {
+export async function fetchVamPaintings(page = 1): Promise<ArtObject[]> {
   try {
     const searchResponse = await fetch(
-      "https://api.vam.ac.uk/v2/objects/search?q=painting&size=10&object_type=Painting&fields=systemNumber,_primaryTitle,_primaryMaker,_primaryDate,_primaryImageId"
+      `https://api.vam.ac.uk/v2/objects/search?q=painting&size=10&page=${page}&object_type=Painting&fields=systemNumber,_primaryTitle,_primaryMaker,_primaryDate,_primaryImageId`
     );
 
     if (!searchResponse.ok) {

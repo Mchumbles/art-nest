@@ -33,10 +33,10 @@ const queryParams = {
 };
  */
 
-export async function fetchMetPaintings(): Promise<ArtObject[]> {
+export async function fetchMetPaintings(page = 1): Promise<ArtObject[]> {
   try {
     const searchResponse = await fetch(
-      "https://collectionapi.metmuseum.org/public/collection/v1/search?q=paintings&size=10"
+      "https://collectionapi.metmuseum.org/public/collection/v1/search?q=paintings&hasImages=true"
     );
 
     if (!searchResponse.ok) {
@@ -46,13 +46,18 @@ export async function fetchMetPaintings(): Promise<ArtObject[]> {
     const searchData = await searchResponse.json();
     const objectIDs: number[] = searchData.objectIDs || [];
 
-    const batchPromises = objectIDs.slice(0, 10).map(async (objectID) => {
+    const pageSize = 10;
+    const start = (page - 1) * pageSize;
+    const end = start + pageSize;
+    const paginatedIDs = objectIDs.slice(start, end);
+
+    const batchPromises = paginatedIDs.map(async (objectID) => {
       const detailResponse = await fetch(
         `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`
       );
 
       if (!detailResponse.ok) {
-        throw new Error(`Failed to fetch object ${objectID} from MET`);
+        return null;
       }
 
       const detailData = await detailResponse.json();

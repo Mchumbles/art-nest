@@ -33,14 +33,13 @@ const queryParams = {
   };
 */
 
-export async function fetchHarvardPaintings(): Promise<ArtObject[]> {
-  const page = 1;
+export async function fetchHarvardPaintings(page = 1): Promise<ArtObject[]> {
   const response = await fetch(
     `https://api.harvardartmuseums.org/object?apikey=${process.env.NEXT_PUBLIC_HARVARD_API_KEY}&size=10&classification=Paintings&hasimage=1&page=${page}`
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch Harvard artworks");
+    throw new Error("Failed to fetch Harvard paintings");
   }
 
   const data = await response.json();
