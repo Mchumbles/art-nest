@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchHarvardPaintings } from "@/api/harvard";
-import { fetchMetPaintings } from "@/api/met";
-import { fetchVamPaintings } from "@/api/vam";
-import { ArtObject, SortOption } from "@/types/artworks";
+import { useState } from "react";
+import { ArtObject, FilterSortProps, SortOption } from "@/types/artworks";
 import ArtCard from "@/components/ArtCard";
 
-export default function FilterSortBar() {
-  const [artworks, setArtworks] = useState<ArtObject[]>([]);
-  const [page, setPage] = useState(1);
+type Props = FilterSortProps & {
+  loadMore: () => void;
+};
 
+export default function FilterSortBar({ artworks, loadMore }: Props) {
   const [sortBy, setSortBy] = useState<SortOption>("title");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -19,24 +17,6 @@ export default function FilterSortBar() {
     Met: true,
     vam: true,
   });
-
-  const loadArtworks = async (pageNum: number) => {
-    const [harvard, met, vam] = await Promise.all([
-      fetchHarvardPaintings(pageNum),
-      fetchMetPaintings(pageNum),
-      fetchVamPaintings(pageNum),
-    ]);
-
-    setArtworks((prev) => [...prev, ...harvard, ...met, ...vam]);
-  };
-
-  useEffect(() => {
-    loadArtworks(page);
-  }, [page]);
-
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
 
   const toggleSource = (source: string) => {
     setSourceFilter((prev) => ({
@@ -80,7 +60,7 @@ export default function FilterSortBar() {
 
       <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
         <select
-          className="border p-2 "
+          className="border p-2"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
         >
@@ -114,7 +94,7 @@ export default function FilterSortBar() {
       </ul>
 
       <div className="flex justify-center mt-6">
-        <button onClick={loadMore} className="p-3 mb-6 border ">
+        <button onClick={loadMore} className="p-3 mb-6 border">
           Load More
         </button>
       </div>
