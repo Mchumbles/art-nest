@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -15,9 +14,38 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
+  id        String   @id @default(uuid())
   email     String   @unique
   password  String
+  username  String
   createdAt DateTime @default(now())
+  exhibitions Exhibition[]
+
+  @@map("users")  
+}
+
+model Exhibition {
+  id         String     @id @default(uuid())
+  title      String
+  location   String
+  category   String
+  createdAt  DateTime   @default(now())
+  user       User       @relation(fields: [userId], references: [id])
+  userId     String
+  artworks   Artwork[]
+
+  @@map("exhibitions")
+}
+
+model Artwork {
+  id            String     @id @default(uuid())
+  title         String
+  artist        String
+  date          DateTime
+  image         String
+  url           String
+  exhibition    Exhibition @relation(fields: [exhibitionId], references: [id])
+  exhibitionId  String
+
+  @@map("artworks")
 }
