@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchHarvardPaintings } from "@/pages/api/harvard";
 import { fetchMetPaintings } from "@/pages/api/met";
 import { fetchVamPaintings } from "@/pages/api/vam";
@@ -10,6 +10,7 @@ import FilterSortBar from "@/components/FilterSortBar";
 export default function PaintingsPage() {
   const [paintings, setPaintings] = useState<ArtObject[]>([]);
   const [page, setPage] = useState(1);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
     const loadPaintings = async () => {
@@ -22,7 +23,10 @@ export default function PaintingsPage() {
       setPaintings((prev) => [...prev, ...harvard, ...met, ...vam]);
     };
 
-    loadPaintings();
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      loadPaintings();
+    }
   }, [page]);
 
   return (
