@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchHarvardPaintings } from "@/api/harvard";
-import { fetchMetPaintings } from "@/api/met";
-import { fetchVamPaintings } from "@/api/vam";
+import { fetchHarvardPaintings } from "@/pages/api/harvard";
+import { fetchMetPaintings } from "@/pages/api/met";
+import { fetchVamPaintings } from "@/pages/api/vam";
 import { ArtObject } from "@/types/artworks";
 import FilterSortBar from "@/components/FilterSortBar";
 
