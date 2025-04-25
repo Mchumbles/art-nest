@@ -30,8 +30,10 @@ export default function LoginForm() {
         setMessage(data.error || "Login failed");
       } else {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.user.username);
         setMessage("Login successful!");
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -42,7 +44,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4"
+      autoComplete="off"
+    >
       <input
         type="email"
         placeholder="Email"
@@ -50,6 +56,7 @@ export default function LoginForm() {
         onChange={(e) => setEmail(e.target.value)}
         required
         className="px-4 py-2 border-2"
+        autoComplete="off"
       />
       <input
         type="password"
@@ -58,6 +65,7 @@ export default function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
         required
         className="px-4 py-2 border-2"
+        autoComplete="new-password"
       />
       <button type="submit" className="border-2 py-2" disabled={loading}>
         {loading ? "Logging in..." : "Log In"}
