@@ -14,6 +14,8 @@ export default function Navbar() {
         <Link href="/createUser">Create User</Link>
         <p>|</p>
         <Link href="/login">Login</Link>
+        <p>|</p>
+        <Link href="/exhibitions">Exhibitions</Link>
       </div>
       <div className="ml-4">
         <UserGreeting />
