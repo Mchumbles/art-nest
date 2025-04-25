@@ -31,7 +31,13 @@ export default async function handler(
       expiresIn: "7d",
     });
 
-    return response.status(200).json({ token });
+    return response.status(200).json({
+      token,
+      user: {
+        email: user.email,
+        username: user.username,
+      },
+    });
   } catch (error) {
     console.error(error);
     return response.status(500).json({ error: "Something went wrong" });
