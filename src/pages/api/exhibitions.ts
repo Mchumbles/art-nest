@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
-const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
