@@ -5,3 +5,7 @@ export interface Exhibition {
   category: string;
   createdAt: string;
 }
+
+export interface ExhibitionPageProps {
+  params: Promise<{ id: string }>;
+}

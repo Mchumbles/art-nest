@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Exhibition } from "@/types/exhibitions";
+import Link from "next/link";
 
 export default function ExhibitionGallery() {
   const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
@@ -56,14 +57,16 @@ export default function ExhibitionGallery() {
         <p className="text-center">You have no exhibitions yet.</p>
       ) : (
         exhibitions.map((exhibition) => (
-          <div key={exhibition.id} className="border p-4 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold">{exhibition.title}</h3>
-            <p className="text-sm text-gray-600">{exhibition.location}</p>
-            <p className="text-sm text-gray-500">{exhibition.category}</p>
-            <p className="text-sm text-gray-400">
-              {new Date(exhibition.createdAt).toLocaleDateString()}
-            </p>
-          </div>
+          <Link key={exhibition.id} href={`/exhibitions/${exhibition.id}`}>
+            <div className="border p-4 rounded-lg shadow-md hover:bg-gray-100 transition cursor-pointer">
+              <h3 className="text-xl font-semibold">{exhibition.title}</h3>
+              <p className="text-sm text-gray-600">{exhibition.location}</p>
+              <p className="text-sm text-gray-500">{exhibition.category}</p>
+              <p className="text-sm text-gray-400">
+                {new Date(exhibition.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          </Link>
         ))
       )}
     </div>
