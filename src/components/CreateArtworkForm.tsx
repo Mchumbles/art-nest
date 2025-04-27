@@ -25,10 +25,17 @@ export default function CreateArtworkForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("/api/userArtwork", {
+      if (!token) {
+        setMessage("No token found in localStorage");
+        setMessageType("error");
+        return;
+      }
+
+      const response = await fetch("/api/userArtworks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +62,6 @@ export default function CreateArtworkForm({
         url: "",
       });
     } catch (error) {
-      console.error(error);
       setMessage("Failed to create artwork");
       setMessageType("error");
     }
