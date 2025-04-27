@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { UserArtworkPageProps } from "@/types/userArtworks";
+import DeleteButton from "@/components/DeleteArtworkButton";
 
 export default async function UserArtworkPage({
   params,
@@ -9,6 +10,7 @@ export default async function UserArtworkPage({
 
   const artwork = await prisma.artwork.findUnique({
     where: { id },
+    include: { exhibition: true },
   });
 
   if (!artwork) return notFound();
@@ -26,6 +28,8 @@ export default async function UserArtworkPage({
         alt={artwork.title}
         className="w-full h-96 object-cover border"
       />
+
+      <DeleteButton id={artwork.id} exhibitionId={artwork.exhibitionId} />
     </div>
   );
 }

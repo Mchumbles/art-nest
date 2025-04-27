@@ -7,3 +7,8 @@ export interface UserArtworkPageProps {
     id: string;
   };
 }
+
+export interface DeleteButtonProps {
+  id: string;
+  exhibitionId: string;
+}
