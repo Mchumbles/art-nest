@@ -14,14 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String      @id @default(uuid())
+  email     String      @unique
   password  String
   username  String
-  createdAt DateTime @default(now())
-  exhibitions Exhibition[]
+  createdAt DateTime    @default(now())
+  exhibitions Exhibition[] 
+  artworks   Artwork[]    
 
-  @@map("users")  
+  @@map("users")
 }
 
 model Exhibition {
@@ -30,9 +31,9 @@ model Exhibition {
   location   String
   category   String
   createdAt  DateTime   @default(now())
-  user       User       @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade) 
   userId     String
-  artworks   Artwork[]
+  artworks   Artwork[]  
 
   @@map("exhibitions")
 }
@@ -43,9 +44,12 @@ model Artwork {
   artist        String
   date          DateTime
   image         String
-  url           String
-  exhibition    Exhibition @relation(fields: [exhibitionId], references: [id])
-  exhibitionId  String
+  url           String?    
+  exhibition    Exhibition @relation(fields: [exhibitionId], references: [id], onDelete: Cascade) 
+  exhibitionId  String     
+  user          User?      @relation(fields: [userId], references: [id]) 
+  userId        String?
 
   @@map("artworks")
 }
+
