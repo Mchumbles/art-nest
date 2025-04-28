@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ExhibitionPageProps } from "@/types/exhibitions";
 import CreateArtworkForm from "@/components/CreateArtworkForm";
 import DeleteExhibitionButton from "@/components/DeleteExhibitionButton";
+import EditExhibitionForm from "@/components/EditExhibitionForm";
 import Link from "next/link";
 
 export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
@@ -61,6 +62,7 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
       ) : (
         <p className="text-lg">No artworks yet for this exhibition.</p>
       )}
+      <EditExhibitionForm exhibitionId={exhibition.id} />
     </div>
   );
 }
