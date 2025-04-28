@@ -19,7 +19,7 @@ export default function CreateExhibitionForm() {
     }
 
     try {
-      const res = await fetch("/api/postExhibitions", {
+      const res = await fetch("/api/exhibitions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
