@@ -11,18 +11,14 @@ export default function CreateExhibitionForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("Form Submitted");
     const token = localStorage.getItem("token");
-    console.log("Token from localStorage:", token);
 
     if (!token) {
       setMessage("You must be logged in to create an exhibition.");
-      console.log("No token found, user is not logged in");
       return;
     }
 
     try {
-      console.log("Sending request to /api/postExhibitions");
       const res = await fetch("/api/postExhibitions", {
         method: "POST",
         headers: {
@@ -32,10 +28,7 @@ export default function CreateExhibitionForm() {
         body: JSON.stringify({ title, location, category }),
       });
 
-      console.log("Response Status:", res.status);
-
       const data = await res.json();
-      console.log("Response Data:", data);
 
       if (!res.ok) {
         setMessage(data.error || "Something went wrong");
@@ -45,10 +38,8 @@ export default function CreateExhibitionForm() {
         setTitle("");
         setLocation("");
         setCategory("");
-        console.log("Exhibition created successfully");
       }
     } catch (error) {
-      console.error("Error connecting to the server:", error);
       setMessage("Error connecting to the server");
     }
   };

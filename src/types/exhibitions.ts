@@ -7,5 +7,5 @@ export interface Exhibition {
 }
 
 export interface ExhibitionPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
