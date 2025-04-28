@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { UserArtworkPageProps } from "@/types/userArtworks";
 import DeleteButton from "@/components/DeleteArtworkButton";
+import EditArtworkForm from "@/components/EditArtworkForm";
 
 export default async function UserArtworkPage({
   params,
@@ -30,6 +31,7 @@ export default async function UserArtworkPage({
       />
 
       <DeleteButton id={artwork.id} exhibitionId={artwork.exhibitionId} />
+      <EditArtworkForm artworkId={artwork.id} />
     </div>
   );
 }
