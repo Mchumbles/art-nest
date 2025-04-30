@@ -1,4 +1,5 @@
 import { ArtObject } from "../../types/artworks";
+import { classificationMap } from "@/constants/categories";
 
 //Reference for returned object data
 /**
@@ -33,27 +34,56 @@ const queryParams = {
   };
 */
 
-export async function fetchHarvardPaintings(page = 1): Promise<ArtObject[]> {
+export async function fetchHarvardArt(
+  category: string,
+  page = 1,
+  pageSize = 10
+): Promise<ArtObject[]> {
+  const classification = classificationMap[category.toLowerCase()] || category;
+
   const response = await fetch(
-    `https://api.harvardartmuseums.org/object?apikey=${process.env.NEXT_PUBLIC_HARVARD_API_KEY}&size=10&classification=Paintings&hasimage=1&page=${page}`
+    `https://api.harvardartmuseums.org/object?apikey=${process.env.NEXT_PUBLIC_HARVARD_API_KEY}&classification=${classification}&hasimage=1&page=${page}&size=${pageSize}`
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch Harvard paintings");
+    throw new Error("Failed to fetch Harvard artworks by classification");
   }
 
   const data = await response.json();
   const records = data.records || [];
 
-  const artworks = records.map((record: any) => ({
+  if (records.length === 0) {
+    const keywordResponse = await fetch(
+      `https://api.harvardartmuseums.org/object?apikey=${
+        process.env.NEXT_PUBLIC_HARVARD_API_KEY
+      }&hasimage=1&page=${page}&size=${pageSize}&q=${encodeURIComponent(
+        category
+      )}`
+    );
+
+    if (!keywordResponse.ok) {
+      throw new Error("Failed to fetch Harvard artworks by keyword");
+    }
+
+    const keywordData = await keywordResponse.json();
+    return keywordData.records.map((record: any) => ({
+      id: record.id.toString(),
+      title: record.title || "Unknown",
+      artist: record.people?.map((p: any) => p.name).join(", ") || "Unknown",
+      date: record.dated || "Unknown",
+      image: record.primaryimageurl || record.images?.[0]?.baseimageurl || null,
+      url: `https://harvardartmuseums.org/collections/object/${record.id}`,
+      source: "Harvard",
+    }));
+  }
+
+  return records.map((record: any) => ({
     id: record.id.toString(),
     title: record.title || "Unknown",
     artist: record.people?.map((p: any) => p.name).join(", ") || "Unknown",
     date: record.dated || "Unknown",
-    image: record.images?.[0]?.baseimageurl || null,
+    image: record.primaryimageurl || record.images?.[0]?.baseimageurl || null,
     url: `https://harvardartmuseums.org/collections/object/${record.id}`,
     source: "Harvard",
   }));
-
-  return artworks;
 }

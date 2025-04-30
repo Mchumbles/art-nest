@@ -8,16 +8,15 @@ export type ArtObject = {
   source: string;
 };
 
-export type VamPainting = {
-  systemNumber: string;
-  _primaryTitle: string;
-  _primaryMaker?: { name: string };
-  _primaryDate?: string;
-  _primaryImageId?: string;
+export type FilterSortData = {
+  artworks: ArtObject[];
 };
 
-export type FilterSortProps = {
-  artworks: ArtObject[];
+export type FilterSortComponentProps = FilterSortData & {
+  page: number;
+  setPage: (page: number) => void;
+  title?: string;
+  loading?: boolean;
 };
 
 export type SortOption = "title" | "date" | "artist";
