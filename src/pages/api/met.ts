@@ -1,4 +1,5 @@
 import { ArtObject } from "@/types/artworks";
+import { mediumMap } from "@/constants/categories";
 
 //Reference for returned object data
 /**
@@ -33,59 +34,58 @@ const queryParams = {
 };
  */
 
-export async function fetchMetPaintings(page = 1): Promise<ArtObject[]> {
-  try {
-    const searchResponse = await fetch(
-      "https://collectionapi.metmuseum.org/public/collection/v1/search?q=paintings&hasImages=true"
-    );
+export async function fetchMetArt(
+  category: string,
+  page = 1
+): Promise<ArtObject[]> {
+  const medium = mediumMap[category.toLowerCase()] || category;
+  const pageSize = 10;
+  const fetchSize = 30;
 
-    if (!searchResponse.ok) {
-      throw new Error("Failed to fetch search data from MET");
-    }
+  const response = await fetch(
+    `https://collectionapi.metmuseum.org/public/collection/v1/search?q=${encodeURIComponent(
+      category
+    )}&hasImages=true&medium=${encodeURIComponent(medium)}`
+  );
 
-    const searchData = await searchResponse.json();
-    const objectIDs: number[] = searchData.objectIDs || [];
+  if (!response.ok) throw new Error("Failed to fetch MET search data");
 
-    const pageSize = 10;
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize;
-    const paginatedIDs = objectIDs.slice(start, end);
+  const data = await response.json();
+  const objectIDs = data.objectIDs || [];
 
-    const batchPromises = paginatedIDs.map(async (objectID) => {
-      const detailResponse = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`
+  const start = (page - 1) * fetchSize;
+  const end = start + fetchSize;
+  const paginated = objectIDs.slice(start, end);
+
+  const artworks: ArtObject[] = [];
+
+  for (const id of paginated) {
+    try {
+      const detail = await fetch(
+        `https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`
       );
-
-      if (!detailResponse.ok) {
-        return null;
+      if (!detail.ok) {
+        continue;
       }
 
-      const detailData = await detailResponse.json();
+      const artwork = await detail.json();
+      if (!artwork.primaryImageSmall) continue;
 
-      if (
-        detailData.classification === "Paintings" &&
-        detailData.primaryImageSmall
-      ) {
-        const artwork: ArtObject = {
-          id: detailData.objectID.toString(),
-          title: detailData.title || "Unknown",
-          artist: detailData.artistDisplayName || "Unknown",
-          date: detailData.objectDate || "Unknown",
-          image: detailData.primaryImageSmall || null,
-          url: detailData.objectURL || "#",
-          source: "Met",
-        };
+      artworks.push({
+        id: artwork.objectID.toString(),
+        title: artwork.title || "Unknown",
+        artist: artwork.artistDisplayName || "Unknown",
+        date: artwork.objectDate || "Unknown",
+        image: artwork.primaryImageSmall,
+        url: artwork.objectURL,
+        source: "Met",
+      });
 
-        return artwork;
-      }
-
-      return null;
-    });
-
-    const artworks = await Promise.all(batchPromises);
-    return artworks.filter((artwork) => artwork !== null) as ArtObject[];
-  } catch (error) {
-    console.error("Error fetching MET paintings:", error);
-    throw error;
+      if (artworks.length >= pageSize) break;
+    } catch {
+      continue;
+    }
   }
+
+  return artworks;
 }

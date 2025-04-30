@@ -1,14 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { ArtObject, FilterSortProps, SortOption } from "@/types/artworks";
+import {
+  ArtObject,
+  FilterSortComponentProps,
+  SortOption,
+} from "@/types/artworks";
 import ArtCard from "@/components/ArtCard";
 
-type Props = FilterSortProps & {
-  loadMore: () => void;
-};
-
-export default function FilterSortBar({ artworks, loadMore }: Props) {
+export default function FilterSortBar({
+  artworks,
+  page,
+  setPage,
+  title,
+  loading = false,
+}: FilterSortComponentProps) {
   const [sortBy, setSortBy] = useState<SortOption>("title");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -56,7 +62,11 @@ export default function FilterSortBar({ artworks, loadMore }: Props) {
 
   return (
     <section>
-      <h1 className="text-3xl text-center mb-5 mt-5">All Paintings</h1>
+      <h1 className="text-3xl text-center mb-5 mt-5">
+        {title
+          ? `${title.charAt(0).toUpperCase() + title.slice(1)}`
+          : "All Artworks"}
+      </h1>
 
       <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
         <select
@@ -93,9 +103,23 @@ export default function FilterSortBar({ artworks, loadMore }: Props) {
         ))}
       </ul>
 
-      <div className="flex justify-center mt-6">
-        <button onClick={loadMore} className="p-3 mb-6 border">
-          Load More
+      <div className="flex justify-center gap-4 mt-6 mb-10">
+        <button
+          onClick={() => setPage(Math.max(page - 1, 1))}
+          className="p-3 border"
+          disabled={page === 1 || loading}
+        >
+          Previous
+        </button>
+
+        <span className="p-3">{`Page ${page}`}</span>
+
+        <button
+          onClick={() => setPage(page + 1)}
+          className="p-3 border"
+          disabled={loading}
+        >
+          Next
         </button>
       </div>
     </section>

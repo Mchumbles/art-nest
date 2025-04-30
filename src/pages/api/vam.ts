@@ -1,4 +1,4 @@
-import { ArtObject, VamPainting } from "@/types/artworks";
+import { ArtObject } from "@/types/artworks";
 
 //Reference for returned object data
 /**
@@ -26,39 +26,38 @@ const queryParams = {
 };
 */
 
-export async function fetchVamPaintings(page = 1): Promise<ArtObject[]> {
-  try {
-    const searchResponse = await fetch(
-      `https://api.vam.ac.uk/v2/objects/search?q=painting&size=10&page=${page}&object_type=Painting&fields=systemNumber,_primaryTitle,_primaryMaker,_primaryDate,_primaryImageId`
-    );
+export async function fetchVamArt(
+  category: string,
+  page = 1
+): Promise<ArtObject[]> {
+  const keyword = category.toLowerCase();
 
-    if (!searchResponse.ok) {
-      throw new Error("Failed to fetch search data from V&A");
-    }
+  const response = await fetch(
+    `https://api.vam.ac.uk/v2/objects/search?q=${encodeURIComponent(
+      keyword
+    )}&images_exist=1&size=10&page=${page}&fields=systemNumber,_primaryTitle,_primaryMaker,_primaryDate,_primaryImageId`
+  );
 
-    const searchData = await searchResponse.json();
-    const records: VamPainting[] = searchData.records || [];
-
-    const artworks = await Promise.all(
-      records.map(async (painting) => {
-        const artwork: ArtObject = {
-          id: painting.systemNumber,
-          title: painting._primaryTitle || "Unknown",
-          artist: painting._primaryMaker?.name || "Unknown",
-          date: painting._primaryDate || "Unknown",
-          image: painting._primaryImageId
-            ? `https://framemark.vam.ac.uk/collections/${painting._primaryImageId}/full/full/0/default.jpg`
-            : null,
-          url: `https://collections.vam.ac.uk/item/${painting.systemNumber}`,
-          source: "vam",
-        };
-        return artwork;
-      })
-    );
-
-    return artworks.filter((artwork) => artwork !== null) as ArtObject[];
-  } catch (error) {
-    console.error("Error fetching V&A paintings:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Failed to fetch V&A artworks");
   }
+
+  const data = await response.json();
+  const records = data.records || [];
+
+  if (records.length === 0) {
+    console.warn(`No results found for keyword: ${keyword}`);
+  }
+
+  return records.map((record: any) => ({
+    id: record.systemNumber,
+    title: record._primaryTitle || "Unknown",
+    artist: record._primaryMaker?.name || "Unknown",
+    date: record._primaryDate || "Unknown",
+    image: record._primaryImageId
+      ? `https://framemark.vam.ac.uk/collections/${record._primaryImageId}/full/full/0/default.jpg`
+      : null,
+    url: `https://collections.vam.ac.uk/item/${record.systemNumber}`,
+    source: "vam",
+  }));
 }
