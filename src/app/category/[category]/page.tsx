@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { fetchHarvardArt } from "@/pages/api/harvard";
-import { fetchMetArt } from "@/pages/api/met";
-import { fetchVamArt } from "@/pages/api/vam";
+import { fetchHarvardArt } from "@/lib/api/harvard/harvard";
+import { fetchMetArt } from "@/lib/api/met/met";
+import { fetchVamArt } from "@/lib/api/vam/vam";
 import { ArtObject } from "@/types/artworks";
 import FilterSortBar from "@/components/FilterSortBar";
 

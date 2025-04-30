@@ -1,4 +1,4 @@
-import { ArtObject } from "../../types/artworks";
+import { ArtObject } from "../../../types/artworks";
 import { classificationMap } from "@/constants/categories";
 
 //Reference for returned object data
