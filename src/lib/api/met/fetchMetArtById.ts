@@ -17,5 +17,10 @@ export async function fetchMetArtById(id: string): Promise<ArtObject | null> {
     image: record.primaryImage || null,
     url: `https://www.metmuseum.org/art/collection/search/${record.objectID}`,
     source: "Met",
+    description: record.objectDescription || null,
+    medium: record.medium || null,
+    culture: record.culture || null,
+    objectWikidata_URL: record.objectWikidata_URL || null,
+    creditLine: record.creditLine || null,
   };
 }

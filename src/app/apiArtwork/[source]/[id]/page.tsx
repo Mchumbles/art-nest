@@ -52,25 +52,56 @@ export default function ApiArtworkPage() {
   }
 
   return (
-    <section>
+    <section className="container mx-auto p-4">
       <h1 className="text-3xl text-center mb-5 mt-5">{artwork.title}</h1>
       <div className="text-center mb-4">
         <img
           src={artwork.image || "/"}
           alt={artwork.title}
-          className="max-w-full h-auto"
+          className="max-w-full h-auto rounded-md shadow-md"
         />
       </div>
-      <p className="text-center">Artist: {artwork.artist}</p>
-      <p className="text-center">Date: {artwork.date}</p>
-      <a
-        href={artwork.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline mt-4 block text-center"
-      >
-        View on {artwork.source} website
-      </a>
+      <div className="mt-4">
+        <p className="text-lg font-semibold">Artist: {artwork.artist}</p>
+        <p className="text-gray-600">Date: {artwork.date}</p>
+        {artwork.culture && (
+          <p className="text-gray-600">Culture: {artwork.culture}</p>
+        )}
+        {artwork.medium && (
+          <p className="text-gray-600">Medium: {artwork.medium}</p>
+        )}
+
+        {artwork.description ? (
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold mb-2">Description</h2>
+            <p className="text-gray-700">{artwork.description}</p>
+          </div>
+        ) : (
+          artwork.source === "Met" && (
+            <div className="mt-4">
+              <p className="text-gray-700 text-center">
+                For more information about this artwork, please follow the link
+                below to the Met's website.
+              </p>
+            </div>
+          )
+        )}
+
+        {artwork.creditLine && (
+          <p className="text-sm text-gray-500 mt-3 text-center">
+            {artwork.source}: {artwork.creditLine}
+          </p>
+        )}
+
+        <a
+          href={artwork.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-blue-600 underline mt-4 text-center w-full"
+        >
+          View on {artwork.source} website
+        </a>
+      </div>
     </section>
   );
 }

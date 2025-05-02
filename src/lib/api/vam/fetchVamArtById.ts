@@ -13,12 +13,10 @@ export async function fetchVamArtById(
   if (!objectId) return null;
 
   const objectResponse = await fetch(
-    `https://api.vam.ac.uk/v2/object/${objectId}`
+    `https://api.vam.ac.uk/v2/object/${objectId}?includes=description,related_objects`
   );
   if (!objectResponse.ok) return null;
   const { record } = await objectResponse.json();
-
-  console.log(record);
 
   const title =
     record.titles?.[0]?.title || record.briefDescription || "Unknown";
@@ -35,6 +33,14 @@ export async function fetchVamArtById(
       )}/${imageId}.jpg`
     : null;
 
+  const description =
+    record.description?.map((desc: any) => desc.text).join("\n") ||
+    record.briefDescription ||
+    null;
+  const medium = record.materialsAndTechniques || null;
+  const culture = record.cultures?.[0]?.text || null;
+  const creditLine = record.creditLine || null;
+
   return {
     id: systemNumber,
     title: title,
@@ -43,5 +49,9 @@ export async function fetchVamArtById(
     image: image,
     source: "VAM",
     url: `https://collections.vam.ac.uk/item/${systemNumber}`,
+    description: description,
+    medium: medium,
+    culture: culture,
+    creditLine: creditLine,
   };
 }
