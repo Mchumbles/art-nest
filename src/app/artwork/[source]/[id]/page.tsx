@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
-import {
-  fetchHarvardArtById,
-  fetchMetArtById,
-  fetchVamArtById,
-} from "@/lib/api/harvard/harvard";
+import { fetchHarvardArtById } from "@/lib/api/harvard/fetchHarvardArtById";
+import { fetchMetArtById } from "@/lib/api/met/fetchMetArtById";
+import { fetchVamArtById } from "@/lib/api/vam/fetchVamArtById";
 import { ArtObject } from "@/types/artworks";
+import Loading from "@/components/Loading";
 
 type Params = {
   params: {
@@ -17,6 +16,7 @@ export default async function ArtworkPage({ params }: Params) {
   const { source, id } = params;
 
   let artwork: ArtObject | null = null;
+  let isLoading = true;
 
   try {
     switch (source.toLowerCase()) {
@@ -35,6 +35,12 @@ export default async function ArtworkPage({ params }: Params) {
   } catch (error) {
     console.error("Failed to fetch artwork:", error);
     notFound();
+  } finally {
+    isLoading = false;
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   if (!artwork) {

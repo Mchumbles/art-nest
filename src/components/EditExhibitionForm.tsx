@@ -13,13 +13,16 @@ export default function EditExhibitionForm({
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchExhibition() {
+      setLoading(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
         setMessage("You must be logged in to edit an exhibition.");
+        setLoading(false);
         return;
       }
 
@@ -43,6 +46,8 @@ export default function EditExhibitionForm({
         }
       } catch (error) {
         setMessage("Error connecting to the server");
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -51,11 +56,13 @@ export default function EditExhibitionForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const token = localStorage.getItem("token");
 
     if (!token) {
       setMessage("You must be logged in to update an exhibition.");
+      setLoading(false);
       return;
     }
 
@@ -78,39 +85,45 @@ export default function EditExhibitionForm({
       }
     } catch (error) {
       setMessage("Error connecting to the server");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8">
       <h1 className="text-2xl mb-4 text-center">Edit Exhibition</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="border-2 p-2"
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="border-2 p-2"
-        />
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border-2 p-2"
-        />
-        <button type="submit" className="border-2 py-2">
-          Update Exhibition
-        </button>
-        {message && <p className="text-sm text-center mt-2">{message}</p>}
-      </form>
+      {loading ? (
+        <p className="text-center">Loading exhibition details...</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border-2 p-2"
+          />
+          <input
+            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="border-2 p-2"
+          />
+          <input
+            type="text"
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border-2 p-2"
+          />
+          <button type="submit" className="border-2 py-2" disabled={loading}>
+            {loading ? "Updating..." : "Update Exhibition"}
+          </button>
+          {message && <p className="text-sm text-center mt-2">{message}</p>}
+        </form>
+      )}
     </div>
   );
 }

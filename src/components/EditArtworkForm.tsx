@@ -12,13 +12,16 @@ export default function EditArtworkForm({ artworkId }: EditArtworkFormProps) {
   const [image, setImage] = useState("");
   const [date, setDate] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchArtwork() {
+      setLoading(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
         setMessage("You must be logged in to edit artwork.");
+        setLoading(false);
         return;
       }
 
@@ -43,6 +46,8 @@ export default function EditArtworkForm({ artworkId }: EditArtworkFormProps) {
         }
       } catch (error) {
         setMessage("Error connecting to the server");
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -51,11 +56,13 @@ export default function EditArtworkForm({ artworkId }: EditArtworkFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const token = localStorage.getItem("token");
 
     if (!token) {
       setMessage("You must be logged in to update artwork.");
+      setLoading(false);
       return;
     }
 
@@ -80,46 +87,52 @@ export default function EditArtworkForm({ artworkId }: EditArtworkFormProps) {
       }
     } catch (error) {
       setMessage("Error connecting to the server");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8">
       <h1 className="text-2xl mb-4 text-center">Edit Artwork</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="border-2 p-2"
-        />
-        <input
-          type="text"
-          placeholder="Artist"
-          value={artist}
-          onChange={(e) => setArtist(e.target.value)}
-          className="border-2 p-2"
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          className="border-2 p-2"
-        />
-        <input
-          type="date"
-          placeholder="Date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="border-2 p-2"
-        />
-        <button type="submit" className="border-2 py-2">
-          Update Artwork
-        </button>
-        {message && <p className="text-sm text-center mt-2">{message}</p>}
-      </form>
+      {loading ? (
+        <p className="text-center">Loading artwork details...</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border-2 p-2"
+          />
+          <input
+            type="text"
+            placeholder="Artist"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+            className="border-2 p-2"
+          />
+          <input
+            type="text"
+            placeholder="Image URL"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            className="border-2 p-2"
+          />
+          <input
+            type="date"
+            placeholder="Date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border-2 p-2"
+          />
+          <button type="submit" className="border-2 py-2" disabled={loading}>
+            {loading ? "Updating..." : "Update Artwork"}
+          </button>
+          {message && <p className="text-sm text-center mt-2">{message}</p>}
+        </form>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CreateArtworkFormProps } from "@/types/userArtworks";
+import Loading from "@/components/Loading";
 
 export default function CreateArtworkForm({
   exhibitionId,
@@ -17,6 +18,7 @@ export default function CreateArtworkForm({
   const [messageType, setMessageType] = useState<"error" | "success" | null>(
     null
   );
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,6 +27,7 @@ export default function CreateArtworkForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const token = localStorage.getItem("token");
@@ -32,6 +35,7 @@ export default function CreateArtworkForm({
       if (!token) {
         setMessage("No token found in localStorage");
         setMessageType("error");
+        setLoading(false);
         return;
       }
 
@@ -64,6 +68,8 @@ export default function CreateArtworkForm({
     } catch (error) {
       setMessage("Failed to create artwork");
       setMessageType("error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +83,10 @@ export default function CreateArtworkForm({
       return () => clearTimeout(timer);
     }
   }, [message]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6 p-6 border-2">
@@ -92,6 +102,7 @@ export default function CreateArtworkForm({
         </p>
       )}
 
+      {/* Form fields remain the same */}
       <div className="flex flex-col">
         <label htmlFor="title" className="text-sm font-medium mb-1">
           Artwork Title
@@ -155,8 +166,8 @@ export default function CreateArtworkForm({
         />
       </div>
 
-      <button type="submit" className="border-2 py-2 px-4">
-        Create Artwork
+      <button type="submit" className="border-2 py-2 px-4" disabled={loading}>
+        {loading ? "Creating..." : "Create Artwork"}
       </button>
     </form>
   );
