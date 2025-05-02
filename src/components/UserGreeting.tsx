@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function UserGreeting() {
   const [username, setUsername] = useState<string | null>(null);
@@ -26,7 +27,21 @@ export default function UserGreeting() {
           </button>
         </>
       ) : (
-        <p>Not logged in</p>
+        <>
+          <p>Not logged in</p>
+          <div className="mt-1 space-x-2">
+            <Link href="/login" className="text-blue-500 underline text-xs">
+              Login
+            </Link>
+            <span>|</span>
+            <Link
+              href="/createUser"
+              className="text-blue-500 underline text-xs"
+            >
+              Register
+            </Link>
+          </div>
+        </>
       )}
     </div>
   );
