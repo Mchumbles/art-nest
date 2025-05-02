@@ -1,9 +1,17 @@
+import Link from "next/link";
 import { ArtObject } from "@/types/artworks";
 
 export default function ArtCard({ artwork }: { artwork: ArtObject }) {
   return (
     <div className="border p-4 shadow-md flex flex-col min-h-[550px]">
-      <h4 className="text-xl mb-2">Title: {artwork.title}</h4>
+      <h4 className="text-xl mb-2">
+        <Link
+          href={`/apiArtwork/${artwork.source.toLowerCase()}/${artwork.id}`}
+          className="text-blue-600 underline"
+        >
+          Title: {artwork.title}
+        </Link>
+      </h4>
       <p>Artist: {artwork.artist}</p>
       <p>Date: {artwork.date}</p>
       <p>Source: {artwork.source}</p>

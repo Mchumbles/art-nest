@@ -6,6 +6,11 @@ export type ArtObject = {
   image: string | null;
   url: string;
   source: string;
+  description?: string | null;
+  medium?: string | null;
+  culture?: string | null;
+  creditLine?: string | null;
+  objectWikidata_URL?: string | null;
 };
 
 export type FilterSortData = {
