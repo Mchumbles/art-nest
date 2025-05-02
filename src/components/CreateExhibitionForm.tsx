@@ -1,20 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function CreateExhibitionForm() {
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const token = localStorage.getItem("token");
 
     if (!token) {
       setMessage("You must be logged in to create an exhibition.");
+      setLoading(false);
       return;
     }
 
@@ -41,8 +45,14 @@ export default function CreateExhibitionForm() {
       }
     } catch (error) {
       setMessage("Error connecting to the server");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="max-w-md mx-auto mt-8">
@@ -72,8 +82,8 @@ export default function CreateExhibitionForm() {
           className="border-2 p-2"
           required
         />
-        <button type="submit" className="border-2 py-2">
-          Create Exhibition
+        <button type="submit" className="border-2 py-2" disabled={loading}>
+          {loading ? "Creating..." : "Create Exhibition"}
         </button>
         {message && <p className="text-sm text-center mt-2">{message}</p>}
       </form>

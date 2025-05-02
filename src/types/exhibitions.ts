@@ -9,3 +9,7 @@ export interface Exhibition {
 export interface ExhibitionPageProps {
   params: { id: string };
 }
+
+export interface DeleteExhibitionButtonProps {
+  id: string;
+}

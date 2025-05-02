@@ -6,6 +6,7 @@ import { fetchHarvardArtById } from "@/lib/api/harvard/fetchHarvardArtById";
 import { fetchMetArtById } from "@/lib/api/met/fetchMetArtById";
 import { fetchVamArtById } from "@/lib/api/vam/fetchVamArtById";
 import { ArtObject } from "@/types/artworks";
+import Loading from "@/components/Loading";
 
 export default function ApiArtworkPage() {
   const params = useParams();
@@ -44,7 +45,7 @@ export default function ApiArtworkPage() {
   }, [source, id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!artwork) {
