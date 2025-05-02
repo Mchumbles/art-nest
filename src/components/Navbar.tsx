@@ -45,7 +45,7 @@ export default function Navbar() {
   }, [desktopDropdownRef]);
 
   return (
-    <nav className="bg-white shadow-md py-4 px-4 sm:px-8 relative z-30">
+    <nav className="bg-white shadow-md py-4 px-4 relative z-30">
       <div className="container mx-auto flex items-center justify-between text-xl sm:text-2xl">
         <Link href="/" className="font-semibold">
           Art Nest
@@ -64,15 +64,16 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="hidden sm:flex items-center gap-6">
+        <div className="hidden sm:flex items-center gap-8 lg:gap-20 ml-20 lg:ml-50 mr-10">
+          {" "}
           <div className="relative" ref={desktopDropdownRef}>
-            {" "}
             <button
               className="hover:text-blue-600 focus:outline-none"
               onClick={() => setIsDropdownOpenDesktop((prev) => !prev)}
             >
               Categories
             </button>
+
             {isDropdownOpenDesktop && (
               <ul className="absolute left-0 bg-white shadow-lg border mt-2 p-2 text-base z-10">
                 {categories.map((cat) => (
@@ -89,20 +90,16 @@ export default function Navbar() {
               </ul>
             )}
           </div>
-
           <Link href="/exhibitions" className="hover:text-blue-600">
             Exhibitions
-          </Link>
-          <Link href="/createUser" className="hover:text-blue-600">
-            Create User
           </Link>
           <Link href="/login" className="hover:text-blue-600">
             Login
           </Link>
+        </div>
 
-          <div className="ml-4">
-            <UserGreeting />
-          </div>
+        <div className="hidden sm:block ml-auto">
+          <UserGreeting />
         </div>
 
         {isMobileMenuOpen && (
@@ -140,21 +137,11 @@ export default function Navbar() {
                 Exhibitions
               </Link>
               <Link
-                href="/createUser"
-                className="block py-2 hover:bg-gray-100 hover:text-blue-600"
-              >
-                Create User
-              </Link>
-              <Link
                 href="/login"
                 className="block py-2 hover:bg-gray-100 hover:text-blue-600"
               >
                 Login
               </Link>
-
-              <div className="mt-2">
-                <UserGreeting />
-              </div>
             </div>
           </div>
         )}
