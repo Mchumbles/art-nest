@@ -7,6 +7,7 @@ import { fetchMetArtById } from "@/lib/api/met/fetchMetArtById";
 import { fetchVamArtById } from "@/lib/api/vam/fetchVamArtById";
 import { ArtObject } from "@/types/artworks";
 import Loading from "@/components/Loading";
+import AddToExhibition from "@/components/AddExternalArtwork";
 
 export default function ApiArtworkPage() {
   const params = useParams();
@@ -102,6 +103,7 @@ export default function ApiArtworkPage() {
         >
           View on {artwork.source} website
         </a>
+        {artwork && <AddToExhibition artwork={artwork} />}
       </div>
     </section>
   );

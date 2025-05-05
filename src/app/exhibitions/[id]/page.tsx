@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { ExhibitionPageProps } from "@/types/exhibitions";
-import CreateArtworkForm from "@/components/CreateArtworkForm";
+// import CreateArtworkForm from "@/components/CreateArtworkForm";
 import DeleteExhibitionButton from "@/components/DeleteExhibitionButton";
 import EditExhibitionForm from "@/components/EditExhibitionForm";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
         {exhibition.location} | {exhibition.category}
       </p>
 
-      <CreateArtworkForm exhibitionId={id} />
+      {/* <CreateArtworkForm exhibitionId={id} /> */}
 
       <h2 className="text-3xl mt-8 mb-4 font-semibold">Artworks</h2>
 
