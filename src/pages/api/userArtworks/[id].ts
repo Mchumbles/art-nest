@@ -119,7 +119,7 @@ export default async function handler(
           title: title || artwork.title,
           artist: artist || artwork.artist,
           image: image || artwork.image,
-          date: date ? new Date(date) : artwork.date,
+          date: date ? new Date(date).toISOString() : artwork.date, // Updated line to convert to ISO string
         },
       });
 

@@ -21,14 +21,19 @@ export default async function UserArtworkPage({
       <h1 className="text-3xl font-bold mb-6">{artwork.title}</h1>
       <p className="text-xl mb-2">Artist: {artwork.artist}</p>
       <p className="text-lg mb-6">
-        Artwork created: {new Date(artwork.date).toLocaleDateString()}
+        Artwork created:{" "}
+        {artwork.date
+          ? new Date(artwork.date).toLocaleDateString()
+          : "Unknown date"}
       </p>
 
-      <img
-        src={artwork.image}
-        alt={artwork.title}
-        className="w-full h-96 object-cover border"
-      />
+      {artwork.image && (
+        <img
+          src={artwork.image}
+          alt={artwork.title}
+          className="w-full h-96 object-cover border"
+        />
+      )}
 
       <DeleteButton id={artwork.id} exhibitionId={artwork.exhibitionId} />
       <EditArtworkForm artworkId={artwork.id} />

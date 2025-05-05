@@ -14,42 +14,47 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  email     String      @unique
-  password  String
-  username  String
-  createdAt DateTime    @default(now())
-  exhibitions Exhibition[] 
-  artworks   Artwork[]    
+  id          String       @id @default(uuid())
+  email       String       @unique
+  password    String
+  username    String
+  createdAt   DateTime     @default(now())
+  exhibitions Exhibition[]
+  artworks    Artwork[]
 
   @@map("users")
 }
 
 model Exhibition {
-  id         String     @id @default(uuid())
-  title      String
-  location   String
-  category   String
-  createdAt  DateTime   @default(now())
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade) 
-  userId     String
-  artworks   Artwork[]  
+  id        String    @id @default(uuid())
+  title     String
+  location  String
+  category  String
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  artworks  Artwork[]
 
   @@map("exhibitions")
 }
 
 model Artwork {
-  id            String     @id @default(uuid())
-  title         String
-  artist        String
-  date          DateTime
-  image         String
-  url           String?    
-  exhibition    Exhibition @relation(fields: [exhibitionId], references: [id], onDelete: Cascade) 
-  exhibitionId  String     
-  user          User?      @relation(fields: [userId], references: [id]) 
-  userId        String?
+  id                 String    @id @default(uuid())
+  title              String
+  artist             String
+  date               String?
+  image              String? 
+  url                String?
+  source             String?
+  description        String?
+  medium             String?
+  culture            String?
+  creditLine         String?
+  objectWikidata_URL String?
+  exhibition         Exhibition @relation(fields: [exhibitionId], references: [id], onDelete: Cascade)
+  exhibitionId       String
+  user               User?      @relation(fields: [userId], references: [id])
+  userId             String?
 
   @@map("artworks")
 }
-

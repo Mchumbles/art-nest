@@ -102,7 +102,6 @@ export default function CreateArtworkForm({
         </p>
       )}
 
-      {/* Form fields remain the same */}
       <div className="flex flex-col">
         <label htmlFor="title" className="text-sm font-medium mb-1">
           Artwork Title
