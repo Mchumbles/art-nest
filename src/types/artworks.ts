@@ -25,3 +25,7 @@ export type FilterSortComponentProps = FilterSortData & {
 };
 
 export type SortOption = "title" | "date" | "artist";
+
+export interface UserArtworkPageProps {
+  params: { id: string };
+}

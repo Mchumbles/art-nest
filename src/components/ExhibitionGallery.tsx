@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Exhibition } from "@/types/exhibitions";
+import { ExhibitionDetails } from "@/types/exhibitions";
 import Link from "next/link";
+import Loading from "@/components/Loading";
 
 export default function ExhibitionGallery() {
-  const [exhibitions, setExhibitions] = useState<Exhibition[]>([]);
+  const [exhibitions, setExhibitions] = useState<ExhibitionDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
@@ -44,7 +45,7 @@ export default function ExhibitionGallery() {
   }, []);
 
   if (loading) {
-    return <p>Loading exhibitions...</p>;
+    return <Loading />;
   }
 
   if (error) {

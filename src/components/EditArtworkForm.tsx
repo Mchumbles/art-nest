@@ -1,138 +1,109 @@
-"use client";
+// "use client";
 
-import { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 
-interface EditArtworkFormProps {
-  artworkId: string;
-}
+// interface EditArtworkFormProps {
+//   artworkId: string;
+// }
 
-export default function EditArtworkForm({ artworkId }: EditArtworkFormProps) {
-  const [title, setTitle] = useState("");
-  const [artist, setArtist] = useState("");
-  const [image, setImage] = useState("");
-  const [date, setDate] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+// const EditArtworkForm: React.FC<EditArtworkFormProps> = ({ artworkId }) => {
+//   const [title, setTitle] = useState("");
+//   const [date, setDate] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    async function fetchArtwork() {
-      setLoading(true);
-      const token = localStorage.getItem("token");
+//   useEffect(() => {
+//     const fetchArtwork = async () => {
+//       setLoading(true);
+//       try {
+//         const response = await fetch(`/api/artworks/${artworkId}`, {
+//           method: "GET",
+//         });
+//         if (!response.ok) {
+//           const errorData = await response.json();
+//           setMessage(errorData.error || "Failed to fetch artwork data.");
+//           return;
+//         }
+//         const artworkData = await response.json();
 
-      if (!token) {
-        setMessage("You must be logged in to edit artwork.");
-        setLoading(false);
-        return;
-      }
+//         setTitle(artworkData.title);
+//         setDate(artworkData.date || "");
+//       } catch (error) {
+//         setMessage("Error fetching artwork data.");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+//     fetchArtwork();
+//   }, [artworkId]);
 
-      try {
-        const res = await fetch(`/api/userArtworks/${artworkId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     try {
+//       const response = await fetch(`/api/artworks/${artworkId}`, {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ title, date }),
+//       });
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         setMessage(errorData.error || "Failed to update artwork.");
+//         return;
+//       }
+//       setMessage("Artwork updated successfully!");
+//     } catch (error) {
+//       setMessage("Error updating artwork.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-        const data = await res.json();
+//   return (
+//     <form onSubmit={handleSubmit} className="space-y-4">
+//       <div>
+//         <label
+//           htmlFor="title"
+//           className="block text-sm font-medium text-gray-700"
+//         >
+//           Title
+//         </label>
+//         <input
+//           id="title"
+//           type="text"
+//           value={title}
+//           onChange={(e) => setTitle(e.target.value)}
+//           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+//         />
+//       </div>
+//       <div>
+//         <label
+//           htmlFor="date"
+//           className="block text-sm font-medium text-gray-700"
+//         >
+//           Date
+//         </label>
+//         <input
+//           id="date"
+//           type="text"
+//           value={date}
+//           onChange={(e) => setDate(e.target.value)}
+//           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+//         />
+//       </div>
 
-        if (!res.ok) {
-          setMessage(data.error || "Something went wrong");
-        } else {
-          setTitle(data.title);
-          setArtist(data.artist);
-          setImage(data.image);
-          setDate(data.date ? data.date.slice(0, 10) : "");
-        }
-      } catch (error) {
-        setMessage("Error connecting to the server");
-      } finally {
-        setLoading(false);
-      }
-    }
+//       <button
+//         type="submit"
+//         className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+//         disabled={loading}
+//       >
+//         {loading ? "Updating..." : "Update Artwork"}
+//       </button>
+//       {message && <p className="text-sm text-gray-500">{message}</p>}
+//     </form>
+//   );
+// };
 
-    fetchArtwork();
-  }, [artworkId]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setMessage("You must be logged in to update artwork.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const parsedDate = date ? date : null;
-
-      const res = await fetch(`/api/userArtworks/${artworkId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title, artist, image, date: parsedDate }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setMessage(data.error || "Something went wrong");
-      } else {
-        setMessage("Artwork updated successfully!");
-      }
-    } catch (error) {
-      setMessage("Error connecting to the server");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="max-w-md mx-auto mt-8">
-      <h1 className="text-2xl mb-4 text-center">Edit Artwork</h1>
-      {loading ? (
-        <p className="text-center">Loading artwork details...</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border-2 p-2"
-          />
-          <input
-            type="text"
-            placeholder="Artist"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            className="border-2 p-2"
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="border-2 p-2"
-          />
-          <input
-            type="date"
-            placeholder="Date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="border-2 p-2"
-          />
-          <button type="submit" className="border-2 py-2" disabled={loading}>
-            {loading ? "Updating..." : "Update Artwork"}
-          </button>
-          {message && <p className="text-sm text-center mt-2">{message}</p>}
-        </form>
-      )}
-    </div>
-  );
-}
+// export default EditArtworkForm;
