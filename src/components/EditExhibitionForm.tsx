@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Loading from "@/components/Loading";
 
 interface EditExhibitionFormProps {
   exhibitionId: string;
@@ -40,9 +41,9 @@ export default function EditExhibitionForm({
         if (!res.ok) {
           setMessage(data.error || "Something went wrong");
         } else {
-          setTitle(data.title);
-          setLocation(data.location);
-          setCategory(data.category);
+          setTitle(data.title ?? "");
+          setLocation(data.location ?? "");
+          setCategory(data.category ?? "");
         }
       } catch (error) {
         setMessage("Error connecting to the server");
@@ -90,40 +91,42 @@ export default function EditExhibitionForm({
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="max-w-md mx-auto mt-8">
       <h1 className="text-2xl mb-4 text-center">Edit Exhibition</h1>
-      {loading ? (
-        <p className="text-center">Loading exhibition details...</p>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border-2 p-2"
-          />
-          <input
-            type="text"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="border-2 p-2"
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="border-2 p-2"
-          />
-          <button type="submit" className="border-2 py-2" disabled={loading}>
-            {loading ? "Updating..." : "Update Exhibition"}
-          </button>
-          {message && <p className="text-sm text-center mt-2">{message}</p>}
-        </form>
-      )}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border-2 p-2"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border-2 p-2"
+        />
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="border-2 p-2"
+          required
+        />
+        <button type="submit" className="border-2 py-2" disabled={loading}>
+          {loading ? "Updating..." : "Update Exhibition"}
+        </button>
+        {message && <p className="text-sm text-center mt-2">{message}</p>}
+      </form>
     </div>
   );
 }
