@@ -5,7 +5,6 @@ import Loading from "@/components/Loading";
 
 export default function CreateExhibitionForm() {
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ export default function CreateExhibitionForm() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title, location, category }),
+        body: JSON.stringify({ title, category }),
       });
 
       const data = await res.json();
@@ -40,7 +39,6 @@ export default function CreateExhibitionForm() {
       } else {
         setMessage("Exhibition created successfully!");
         setTitle("");
-        setLocation("");
         setCategory("");
       }
     } catch (error) {
@@ -63,14 +61,6 @@ export default function CreateExhibitionForm() {
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border-2 p-2"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
           className="border-2 p-2"
           required
         />

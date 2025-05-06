@@ -23,9 +23,10 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
         <DeleteExhibitionButton id={exhibition.id} />
       </div>
 
-      <p className="text-xl mb-6">
-        {exhibition.location} | {exhibition.category}
-      </p>
+      <div className="text-xl mb-6 space-y-1">
+        <p>Category: {exhibition.category}</p>
+        {exhibition.location && <p>Location: {exhibition.location}</p>}
+      </div>
 
       {/* <CreateArtworkForm exhibitionId={id} /> */}
 
@@ -62,6 +63,7 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
       ) : (
         <p className="text-lg">No artworks yet for this exhibition.</p>
       )}
+
       <EditExhibitionForm exhibitionId={exhibition.id} />
     </div>
   );
