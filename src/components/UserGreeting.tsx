@@ -22,7 +22,11 @@ export default function UserGreeting() {
       {username ? (
         <>
           <p>Welcome, {username}</p>
-          <button onClick={handleLogout} className="text-xs text-blue-500 mt-1">
+          <button
+            onClick={handleLogout}
+            className="text-xs text-blue-500 mt-1"
+            aria-label="Log out"
+          >
             Log out
           </button>
         </>
@@ -30,13 +34,18 @@ export default function UserGreeting() {
         <>
           <p>Not logged in</p>
           <div className="mt-1 space-x-2">
-            <Link href="/login" className="text-blue-500 underline text-xs">
+            <Link
+              href="/login"
+              className="text-blue-500 underline text-xs"
+              aria-label="Login page"
+            >
               Login
             </Link>
             <span>|</span>
             <Link
               href="/createUser"
               className="text-blue-500 underline text-xs"
+              aria-label="Register page"
             >
               Register
             </Link>

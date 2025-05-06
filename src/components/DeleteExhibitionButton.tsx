@@ -45,6 +45,8 @@ export default function DeleteExhibitionButton({
       onClick={handleDelete}
       className="text-red-600 hover:underline"
       disabled={loading}
+      aria-label="Delete Exhibition"
+      title="Delete this exhibition"
     >
       {loading ? "Deleting..." : "Delete Exhibition"}
     </button>

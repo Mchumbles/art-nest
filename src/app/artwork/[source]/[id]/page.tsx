@@ -48,27 +48,40 @@ export default async function ArtworkPage({ params }: Params) {
   }
 
   return (
-    <main className="p-6">
-      <h1 className="text-3xl font-bold mb-4">{artwork.title}</h1>
-      <p className="text-lg mb-2">
-        <strong>Artist:</strong> {artwork.artist}
-      </p>
-      <p className="text-lg mb-2">
-        <strong>Date:</strong> {artwork.date || "Unknown"}
-      </p>
-      <p className="text-lg mb-2">
-        <strong>Source:</strong> {artwork.source}
-      </p>
+    <main className="p-6" aria-labelledby="artwork-title">
+      <h1 id="artwork-title" className="text-3xl font-bold mb-4">
+        {artwork.title}
+      </h1>
+
+      <section aria-labelledby="artwork-info">
+        <h2 id="artwork-info" className="sr-only">
+          Artwork Information
+        </h2>
+        <p className="text-lg mb-2">
+          <strong>Artist:</strong> {artwork.artist || "Unknown"}
+        </p>
+        <p className="text-lg mb-2">
+          <strong>Date:</strong> {artwork.date || "Unknown"}
+        </p>
+        <p className="text-lg mb-2">
+          <strong>Source:</strong> {artwork.source}
+        </p>
+      </section>
 
       {artwork.image && (
-        <img
-          src={artwork.image}
-          alt={artwork.title}
-          className="mt-6 max-w-full"
-        />
+        <figure className="mt-6">
+          <img
+            src={artwork.image}
+            alt={artwork.title || "Artwork image"}
+            className="max-w-full"
+          />
+          <figcaption className="text-sm text-gray-600 mt-2 text-center">
+            {artwork.artist ? `By ${artwork.artist}` : "Artist unknown"}
+          </figcaption>
+        </figure>
       )}
 
-      <p className="mt-6">
+      <nav className="mt-6" aria-label="External link">
         <a
           href={artwork.url}
           target="_blank"
@@ -77,7 +90,7 @@ export default async function ArtworkPage({ params }: Params) {
         >
           View on official site
         </a>
-      </p>
+      </nav>
     </main>
   );
 }

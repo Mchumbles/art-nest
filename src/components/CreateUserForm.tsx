@@ -45,35 +45,72 @@ export default function CreateUserForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        className="px-4 py-2 border-2"
-      />
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        required
-        className="px-4 py-2 border-2"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        className="px-4 py-2 border-2"
-      />
-      <button type="submit" className="border-2 py-2" disabled={loading}>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4"
+      aria-labelledby="create-user-form"
+    >
+      <h2 id="create-user-form" className="sr-only">
+        Create User Account Form
+      </h2>
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-sm font-medium mb-1">
+          Email
+        </label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="px-4 py-2 border-2"
+          aria-required="true"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="username" className="text-sm font-medium mb-1">
+          Username
+        </label>
+        <input
+          type="text"
+          id="username"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          className="px-4 py-2 border-2"
+          aria-required="true"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="password" className="text-sm font-medium mb-1">
+          Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="px-4 py-2 border-2"
+          aria-required="true"
+        />
+      </div>
+      <button
+        type="submit"
+        className="border-2 py-2"
+        disabled={loading}
+        aria-label="Create user account"
+      >
         {loading ? "Creating Account..." : "Create Account"}
       </button>
-      {message && <p className="mt-4 text-center text-sm">{message}</p>}
+      {message && (
+        <p className="mt-4 text-center text-sm" role="alert" aria-live="polite">
+          {message}
+        </p>
+      )}
     </form>
   );
 }

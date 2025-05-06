@@ -17,39 +17,67 @@ export default async function UserArtworkPage({
   if (!artwork) return notFound();
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">{artwork.title}</h1>
-      <p className="text-xl mb-2">Artist: {artwork.artist}</p>
-      <p className="text-lg mb-2">Date: {artwork.date || "Unknown date"}</p>
-      {artwork.medium && (
-        <p className="text-lg mb-2">Medium: {artwork.medium}</p>
-      )}
-      {artwork.culture && (
-        <p className="text-lg mb-2">Culture: {artwork.culture}</p>
-      )}
-      {artwork.creditLine && (
-        <p className="text-lg mb-2">Credit Line: {artwork.creditLine}</p>
-      )}
-      {artwork.description && (
-        <p className="text-lg mb-6">Description: {artwork.description}</p>
-      )}
+    <div className="p-8 max-w-3xl mx-auto" role="main">
+      <h1 className="text-3xl font-bold mb-6" id="artwork-title">
+        {artwork.title}
+      </h1>
+
+      <section aria-labelledby="artwork-title">
+        <p className="text-xl mb-2">
+          <strong>Artist:</strong> {artwork.artist || "Unknown artist"}
+        </p>
+        <p className="text-lg mb-2">
+          <strong>Date:</strong> {artwork.date || "Unknown date"}
+        </p>
+        {artwork.medium && (
+          <p className="text-lg mb-2">
+            <strong>Medium:</strong> {artwork.medium}
+          </p>
+        )}
+        {artwork.culture && (
+          <p className="text-lg mb-2">
+            <strong>Culture:</strong> {artwork.culture}
+          </p>
+        )}
+        {artwork.creditLine && (
+          <p className="text-lg mb-2">
+            <strong>Credit Line:</strong> {artwork.creditLine}
+          </p>
+        )}
+        {artwork.description && (
+          <p className="text-lg mb-6">
+            <strong>Description:</strong> {artwork.description}
+          </p>
+        )}
+      </section>
 
       {artwork.image && (
-        <img
-          src={artwork.image}
-          alt={artwork.title}
-          className="w-full h-96 object-cover border rounded-md mb-6"
-        />
+        <figure className="mb-6">
+          <img
+            src={artwork.image}
+            alt={artwork.title || "Artwork image"}
+            className="w-full h-96 object-cover border rounded-md"
+            aria-describedby="artwork-description"
+          />
+          <figcaption id="artwork-description" className="sr-only">
+            {artwork.title} by {artwork.artist}
+          </figcaption>
+        </figure>
       )}
+
       {artwork.exhibition && (
-        <p className="text-lg mb-2">Exhibition: {artwork.exhibition.title}</p>
+        <p className="text-lg mb-2">
+          <strong>Exhibition:</strong> {artwork.exhibition.title}
+        </p>
       )}
+
       {artwork.url && (
         <a
           href={artwork.url}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block text-blue-600 underline mt-4 mb-6"
+          aria-label={`View artwork on ${artwork.source} website`}
         >
           View artwork on {artwork.source} website
         </a>

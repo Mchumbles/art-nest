@@ -122,20 +122,28 @@ const AddToExhibition: React.FC<AddToExhibitionProps> = ({ artwork }) => {
       <h3 className="text-lg font-semibold mb-2">
         Add to an Existing Exhibition
       </h3>
+
       {message && (
         <p
           className={
             message.startsWith("Failed") ? "text-red-500" : "text-green-500"
           }
+          aria-live="polite"
         >
           {message}
         </p>
       )}
+
       <div className="flex items-center space-x-4">
+        <label htmlFor="exhibitionSelect" className="sr-only">
+          Select an exhibition
+        </label>
         <select
+          id="exhibitionSelect"
           value={selectedExhibitionId}
           onChange={(e) => setSelectedExhibitionId(e.target.value)}
           className="border rounded px-2 py-1"
+          aria-label="Select an exhibition to add artwork to"
         >
           <option value="">Select an exhibition</option>
           {userExhibitions.map((exhibition) => (
@@ -148,6 +156,7 @@ const AddToExhibition: React.FC<AddToExhibitionProps> = ({ artwork }) => {
           onClick={handleAddToExhibition}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
           disabled={!selectedExhibitionId || addingArtwork}
+          aria-label="Add selected artwork to exhibition"
         >
           {addingArtwork ? "Adding..." : "Add to Exhibition"}
         </button>

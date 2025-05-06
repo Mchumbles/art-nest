@@ -55,6 +55,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             className="text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+            aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? (
               <IoClose size={24} />
@@ -65,23 +66,30 @@ export default function Navbar() {
         </div>
 
         <div className="hidden sm:flex items-center gap-8 lg:gap-20 ml-20 lg:ml-50 mr-10">
-          {" "}
           <div className="relative" ref={desktopDropdownRef}>
             <button
               className="hover:text-blue-600 focus:outline-none"
               onClick={() => setIsDropdownOpenDesktop((prev) => !prev)}
+              aria-haspopup="true"
+              aria-expanded={isDropdownOpenDesktop ? "true" : "false"}
             >
               Categories
             </button>
 
             {isDropdownOpenDesktop && (
-              <ul className="absolute left-0 bg-white shadow-lg border mt-2 p-2 text-base z-10">
+              <ul
+                className="absolute left-0 bg-white shadow-lg border mt-2 p-2 text-base z-10"
+                aria-labelledby="categories-button"
+              >
                 {categories.map((cat) => (
                   <li key={cat}>
                     <Link
                       href={`/category/${cat}`}
                       className="block px-4 py-2 hover:bg-gray-100 hover:text-blue-600"
                       onClick={() => setIsDropdownOpenDesktop(false)}
+                      aria-label={`View ${
+                        cat.charAt(0).toUpperCase() + cat.slice(1)
+                      } category`}
                     >
                       {cat.charAt(0).toUpperCase() + cat.slice(1)}
                     </Link>
@@ -90,6 +98,7 @@ export default function Navbar() {
               </ul>
             )}
           </div>
+
           <Link href="/exhibitions" className="hover:text-blue-600">
             Exhibitions
           </Link>
@@ -109,6 +118,8 @@ export default function Navbar() {
                 <button
                   className="block py-2 w-full text-left hover:bg-gray-100 hover:text-blue-600 focus:outline-none"
                   onClick={() => setIsCategoriesOpenMobile((prev) => !prev)}
+                  aria-haspopup="true"
+                  aria-expanded={isCategoriesOpenMobile ? "true" : "false"}
                 >
                   Categories
                 </button>
@@ -121,6 +132,9 @@ export default function Navbar() {
                           href={`/category/${cat}`}
                           className="block py-2 hover:bg-gray-100 hover:text-blue-600"
                           onClick={() => setIsMobileMenuOpen(false)}
+                          aria-label={`View ${
+                            cat.charAt(0).toUpperCase() + cat.slice(1)
+                          } category`}
                         >
                           {cat.charAt(0).toUpperCase() + cat.slice(1)}
                         </Link>
@@ -133,12 +147,14 @@ export default function Navbar() {
               <Link
                 href="/exhibitions"
                 className="block py-2 hover:bg-gray-100 hover:text-blue-600"
+                aria-label="View Exhibitions"
               >
                 Exhibitions
               </Link>
               <Link
                 href="/login"
                 className="block py-2 hover:bg-gray-100 hover:text-blue-600"
+                aria-label="Login"
               >
                 Login
               </Link>
