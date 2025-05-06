@@ -20,23 +20,31 @@ export default function ExhibitionsPage() {
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div role="status" aria-live="polite">
+        <Loading />
+      </div>
+    );
   }
 
   return (
     <div>
-      <h1 className="text-2xl text-center mt-10">Exhibitions</h1>
+      <h1 className="text-2xl text-center mt-10" id="exhibitions-heading">
+        Exhibitions
+      </h1>
 
-      {isLoggedIn ? (
-        <>
-          <CreateExhibitionForm />
-          <ExhibitionGallery />
-        </>
-      ) : (
-        <p className="text-center text-lg mt-4">
-          Please log in to create or see your exhibitions.
-        </p>
-      )}
+      <section aria-labelledby="exhibitions-heading">
+        {isLoggedIn ? (
+          <>
+            <CreateExhibitionForm />
+            <ExhibitionGallery />
+          </>
+        ) : (
+          <p className="text-center text-lg mt-4" aria-live="polite">
+            Please log in to create or see your exhibitions.
+          </p>
+        )}
+      </section>
     </div>
   );
 }

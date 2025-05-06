@@ -55,27 +55,53 @@ export default function CreateExhibitionForm() {
   return (
     <div className="max-w-md mx-auto mt-8">
       <h1 className="text-2xl mb-4 text-center">Create Exhibition</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="border-2 p-2"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border-2 p-2"
-          required
-        />
-        <button type="submit" className="border-2 py-2" disabled={loading}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+        <div className="w-full">
+          <label htmlFor="title" className="sr-only">
+            Exhibition Title
+          </label>
+          <input
+            id="title"
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border-2 p-2 w-full"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <div className="w-full">
+          <label htmlFor="category" className="sr-only">
+            Exhibition Category
+          </label>
+          <input
+            id="category"
+            type="text"
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border-2 p-2 w-full"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="border-2 py-2"
+          disabled={loading}
+          aria-label="Submit the form to create an exhibition"
+        >
           {loading ? "Creating..." : "Create Exhibition"}
         </button>
-        {message && <p className="text-sm text-center mt-2">{message}</p>}
+
+        {message && (
+          <p className="text-sm text-center mt-2" aria-live="polite">
+            {message}
+          </p>
+        )}
       </form>
     </div>
   );

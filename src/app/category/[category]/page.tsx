@@ -101,7 +101,9 @@ export default function CategoryPage() {
 
   return (
     <section>
-      <h1 className="text-3xl text-center mb-5 mt-5">{title}</h1>
+      <h1 className="text-3xl text-center mb-5 mt-5" id="category-title">
+        {title}
+      </h1>
 
       <FilterSortBar
         sortBy={sortBy}
@@ -113,7 +115,10 @@ export default function CategoryPage() {
         loading={loading}
       />
 
-      <div className="min-h-[calc(100vh - var(--navbar-height))]">
+      <section
+        aria-live="polite"
+        className="min-h-[calc(100vh - var(--navbar-height))]"
+      >
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <Loading />
@@ -121,19 +126,26 @@ export default function CategoryPage() {
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredAndSortedArtworks.map((artwork) => (
-              <li key={`${artwork.source}-${artwork.id}`}>
+              <li
+                key={`${artwork.source}-${artwork.id}`}
+                aria-labelledby={`artwork-${artwork.id}`}
+              >
                 <ArtCard artwork={artwork} />
               </li>
             ))}
           </ul>
         )}
-      </div>
+      </section>
 
-      <div className="flex justify-center gap-4 mt-6 mb-10">
+      <nav
+        aria-label="Pagination"
+        className="flex justify-center gap-4 mt-6 mb-10"
+      >
         <button
           onClick={() => setPage(Math.max(page - 1, 1))}
           className="p-3 border"
           disabled={page === 1 || loading}
+          aria-label="Previous page"
         >
           Previous
         </button>
@@ -144,10 +156,11 @@ export default function CategoryPage() {
           onClick={() => setPage(page + 1)}
           className="p-3 border"
           disabled={loading}
+          aria-label="Next page"
         >
           Next
         </button>
-      </div>
+      </nav>
     </section>
   );
 }

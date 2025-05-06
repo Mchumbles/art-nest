@@ -39,7 +39,13 @@ export default function DeleteButton({ id, exhibitionId }: DeleteButtonProps) {
   }
 
   return (
-    <button onClick={handleDelete} className="text-red-600" disabled={loading}>
+    <button
+      onClick={handleDelete}
+      className="text-red-600"
+      disabled={loading}
+      aria-label="Delete Artwork"
+      title="Delete this artwork from the exhibition"
+    >
       {loading ? "Deleting..." : "Delete Artwork"}
     </button>
   );

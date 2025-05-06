@@ -33,6 +33,7 @@ export default function FilterSortBar({
         value={sortBy}
         onChange={(e) => setSortBy(e.target.value as SortOption)}
         disabled={loading}
+        aria-label="Sort artworks by"
       >
         <option value="title">Sort by Title (A–Z)</option>
         <option value="artist">Sort by Artist (A–Z)</option>
@@ -45,12 +46,19 @@ export default function FilterSortBar({
           setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
         }
         disabled={loading}
+        aria-label={`Sort order: ${
+          sortOrder === "asc" ? "Ascending" : "Descending"
+        }`}
       >
         {sortOrder === "asc" ? "Ascending" : "Descending"}
       </button>
 
       {Object.keys(sourceFilter).map((source) => (
-        <label key={source} className="flex items-center gap-1">
+        <label
+          key={source}
+          className="flex items-center gap-1"
+          aria-label={`Filter by source: ${source}`}
+        >
           <input
             type="checkbox"
             checked={sourceFilter[source]}
@@ -61,6 +69,7 @@ export default function FilterSortBar({
               }))
             }
             disabled={loading}
+            aria-label={`Toggle filter for ${source}`}
           />
           {source}
         </label>

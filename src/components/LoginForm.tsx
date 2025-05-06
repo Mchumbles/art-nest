@@ -30,7 +30,6 @@ export default function LoginForm() {
         setMessage(data.error || "Login failed");
       } else {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.user.username);
         setMessage("Login successful!");
         window.location.href = "/";
@@ -48,30 +47,61 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-4"
       autoComplete="off"
+      aria-labelledby="login-form"
     >
+      <h2 id="login-form" className="sr-only">
+        Login Form
+      </h2>
+
+      <label htmlFor="email" className="sr-only">
+        Email
+      </label>
       <input
         type="email"
+        id="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
         className="px-4 py-2 border-2"
         autoComplete="off"
+        aria-describedby="email-helper"
       />
+      <span id="email-helper" className="sr-only">
+        Enter your email address
+      </span>
+
+      <label htmlFor="password" className="sr-only">
+        Password
+      </label>
       <input
         type="password"
+        id="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
         className="px-4 py-2 border-2"
         autoComplete="new-password"
+        aria-describedby="password-helper"
       />
-      <button type="submit" className="border-2 py-2" disabled={loading}>
+      <span id="password-helper" className="sr-only">
+        Enter your password
+      </span>
+
+      <button
+        type="submit"
+        className="border-2 py-2"
+        disabled={loading}
+        aria-live="polite"
+      >
         {loading ? "Logging in..." : "Log In"}
       </button>
+
       {message && (
-        <p className="mt-4 text-center text-sm text-red-500">{message}</p>
+        <p className="mt-4 text-center text-sm text-red-500" role="alert">
+          {message}
+        </p>
       )}
     </form>
   );

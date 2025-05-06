@@ -76,6 +76,7 @@
 //           value={title}
 //           onChange={(e) => setTitle(e.target.value)}
 //           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+//           aria-label="Artwork title"
 //         />
 //       </div>
 //       <div>
@@ -91,6 +92,7 @@
 //           value={date}
 //           onChange={(e) => setDate(e.target.value)}
 //           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+//           aria-label="Artwork date"
 //         />
 //       </div>
 
@@ -98,6 +100,7 @@
 //         type="submit"
 //         className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
 //         disabled={loading}
+//         aria-label="Update Artwork"
 //       >
 //         {loading ? "Updating..." : "Update Artwork"}
 //       </button>

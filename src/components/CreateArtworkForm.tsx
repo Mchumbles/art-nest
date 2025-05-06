@@ -97,6 +97,7 @@
 //           className={`text-sm font-medium ${
 //             messageType === "error" ? "text-red-600" : "text-green-600"
 //           }`}
+//           aria-live="polite"
 //         >
 //           {message}
 //         </p>
@@ -115,6 +116,7 @@
 //           onChange={handleChange}
 //           required
 //           className="border p-2"
+//           aria-required="true"
 //         />
 //       </div>
 
@@ -131,6 +133,7 @@
 //           onChange={handleChange}
 //           required
 //           className="border p-2"
+//           aria-required="true"
 //         />
 //       </div>
 
@@ -146,6 +149,7 @@
 //           onChange={handleChange}
 //           required
 //           className="border p-2"
+//           aria-required="true"
 //         />
 //       </div>
 
@@ -162,10 +166,11 @@
 //           onChange={handleChange}
 //           required
 //           className="border p-2"
+//           aria-required="false"
 //         />
 //       </div>
 
-//       <button type="submit" className="border-2 py-2 px-4" disabled={loading}>
+//       <button type="submit" className="border-2 py-2 px-4" disabled={loading} aria-label="Create new artwork">
 //         {loading ? "Creating..." : "Create Artwork"}
 //       </button>
 //     </form>

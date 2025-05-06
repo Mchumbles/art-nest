@@ -97,7 +97,6 @@ export default function EditExhibitionForm({
 
   return (
     <div className="max-w-md mx-auto mt-8">
-      <h1 className="text-2xl mb-4 text-center">Edit Exhibition</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
@@ -106,6 +105,7 @@ export default function EditExhibitionForm({
           onChange={(e) => setTitle(e.target.value)}
           className="border-2 p-2"
           required
+          aria-label="Exhibition title"
         />
         <input
           type="text"
@@ -113,6 +113,7 @@ export default function EditExhibitionForm({
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           className="border-2 p-2"
+          aria-label="Exhibition location"
         />
         <input
           type="text"
@@ -121,8 +122,14 @@ export default function EditExhibitionForm({
           onChange={(e) => setCategory(e.target.value)}
           className="border-2 p-2"
           required
+          aria-label="Exhibition category"
         />
-        <button type="submit" className="border-2 py-2" disabled={loading}>
+        <button
+          type="submit"
+          className="border-2 py-2"
+          disabled={loading}
+          aria-label="Update Exhibition"
+        >
           {loading ? "Updating..." : "Update Exhibition"}
         </button>
         {message && <p className="text-sm text-center mt-2">{message}</p>}

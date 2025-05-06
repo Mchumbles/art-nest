@@ -58,12 +58,36 @@ export default function ExhibitionGallery() {
         <p className="text-center">You have no exhibitions yet.</p>
       ) : (
         exhibitions.map((exhibition) => (
-          <Link key={exhibition.id} href={`/exhibitions/${exhibition.id}`}>
+          <Link
+            key={exhibition.id}
+            href={`/exhibitions/${exhibition.id}`}
+            aria-label={`View details for ${exhibition.title} exhibition`}
+          >
             <div className="border p-4 rounded-lg shadow-md hover:bg-gray-100 transition cursor-pointer">
-              <h3 className="text-xl font-semibold">{exhibition.title}</h3>
-              <p className="text-sm text-gray-600">{exhibition.location}</p>
-              <p className="text-sm text-gray-500">{exhibition.category}</p>
-              <p className="text-sm text-gray-400">
+              <h3
+                className="text-xl font-semibold"
+                aria-label={`Exhibition title: ${exhibition.title}`}
+              >
+                {exhibition.title}
+              </h3>
+              <p
+                className="text-sm text-gray-600"
+                aria-label={`Location: ${exhibition.location}`}
+              >
+                {exhibition.location}
+              </p>
+              <p
+                className="text-sm text-gray-500"
+                aria-label={`Category: ${exhibition.category}`}
+              >
+                {exhibition.category}
+              </p>
+              <p
+                className="text-sm text-gray-400"
+                aria-label={`Created on: ${new Date(
+                  exhibition.createdAt
+                ).toLocaleDateString()}`}
+              >
                 {new Date(exhibition.createdAt).toLocaleDateString()}
               </p>
             </div>

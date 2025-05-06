@@ -45,25 +45,30 @@ export default function ApiArtworkPage() {
     fetchArtwork();
   }, [source, id]);
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!artwork) {
-    return <div>Artwork not found.</div>;
-  }
+  if (loading) return <Loading />;
+  if (!artwork) return <div role="alert">Artwork not found.</div>;
 
   return (
-    <section className="container mx-auto p-4">
-      <h1 className="text-3xl text-center mb-5 mt-5">{artwork.title}</h1>
-      <div className="text-center mb-4">
+    <main className="container mx-auto p-4" aria-labelledby="artwork-title">
+      <h1 id="artwork-title" className="text-3xl text-center mb-5 mt-5">
+        {artwork.title}
+      </h1>
+
+      <figure className="text-center mb-4">
         <img
           src={artwork.image || "/"}
-          alt={artwork.title}
+          alt={artwork.title || "Artwork image"}
           className="max-w-full h-auto rounded-md shadow-md"
         />
-      </div>
-      <div className="mt-4">
+        <figcaption className="text-sm text-gray-500 mt-2">
+          {artwork.artist ? `By ${artwork.artist}` : "Artist unknown"}
+        </figcaption>
+      </figure>
+
+      <section aria-labelledby="artwork-details" className="mt-4">
+        <h2 id="artwork-details" className="sr-only">
+          Artwork Details
+        </h2>
         <p className="text-lg font-semibold">Artist: {artwork.artist}</p>
         <p className="text-gray-600">Date: {artwork.date}</p>
         {artwork.culture && (
@@ -72,39 +77,46 @@ export default function ApiArtworkPage() {
         {artwork.medium && (
           <p className="text-gray-600">Medium: {artwork.medium}</p>
         )}
+      </section>
 
-        {artwork.description ? (
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <p className="text-gray-700">{artwork.description}</p>
-          </div>
-        ) : (
-          artwork.source === "Met" && (
-            <div className="mt-4">
-              <p className="text-gray-700 text-center">
-                For more information about this artwork, please follow the link
-                below to the Met's website.
-              </p>
-            </div>
-          )
-        )}
+      {artwork.description ? (
+        <section className="mt-4" aria-labelledby="artwork-description">
+          <h2 id="artwork-description" className="text-xl font-semibold mb-2">
+            Description
+          </h2>
+          <p className="text-gray-700">{artwork.description}</p>
+        </section>
+      ) : (
+        artwork.source === "Met" && (
+          <section className="mt-4">
+            <p className="text-gray-700 text-center">
+              For more information about this artwork, please follow the link
+              below to the Met's website.
+            </p>
+          </section>
+        )
+      )}
 
-        {artwork.creditLine && (
-          <p className="text-sm text-gray-500 mt-3 text-center">
-            {artwork.source}: {artwork.creditLine}
-          </p>
-        )}
+      {artwork.creditLine && (
+        <p className="text-sm text-gray-500 mt-3 text-center">
+          {artwork.source}: {artwork.creditLine}
+        </p>
+      )}
 
+      <div className="mt-4 text-center">
         <a
           href={artwork.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block text-blue-600 underline mt-4 text-center w-full"
+          className="inline-block text-blue-600 underline"
         >
           View on {artwork.source} website
         </a>
-        {artwork && <AddToExhibition artwork={artwork} />}
       </div>
-    </section>
+
+      <div className="mt-6">
+        <AddToExhibition artwork={artwork} />
+      </div>
+    </main>
   );
 }
