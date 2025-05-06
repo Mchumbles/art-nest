@@ -4,9 +4,10 @@ import { ExhibitionPageProps } from "@/types/exhibitions";
 import DeleteExhibitionButton from "@/components/DeleteExhibitionButton";
 import EditExhibitionForm from "@/components/EditExhibitionForm";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
-  const { id } = await params;
+  const { id } = params;
 
   const exhibition = await prisma.exhibition.findUnique({
     where: { id },
@@ -38,8 +39,6 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
         )}
       </section>
 
-      {/* <CreateArtworkForm exhibitionId={id} /> */}
-
       <section>
         <h2 className="text-3xl mt-8 mb-4 font-semibold" id="artworks-heading">
           Artworks
@@ -64,7 +63,7 @@ export default async function ExhibitionPage({ params }: ExhibitionPageProps) {
                     }`}
                   >
                     {artwork.image && (
-                      <img
+                      <Image
                         src={artwork.image}
                         alt={artwork.title || "Artwork"}
                         className="w-full h-64 object-cover hover:opacity-80 transition duration-200"

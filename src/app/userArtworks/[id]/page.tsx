@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import DeleteButton from "@/components/DeleteArtworkButton";
 // import EditArtworkForm from "@/components/EditArtworkForm";
 import { UserArtworkPageProps } from "@/types/artworks";
+import Image from "next/image";
 
 export default async function UserArtworkPage({
   params,
 }: UserArtworkPageProps) {
-  const { id } = await params;
+  const { id } = params;
 
   const artwork = await prisma.artwork.findUnique({
     where: { id },
@@ -53,7 +54,7 @@ export default async function UserArtworkPage({
 
       {artwork.image && (
         <figure className="mb-6">
-          <img
+          <Image
             src={artwork.image}
             alt={artwork.title || "Artwork image"}
             className="w-full h-96 object-cover border rounded-md"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArtObject } from "@/types/artworks";
+import Image from "next/image";
 
 export default function ArtCard({ artwork }: { artwork: ArtObject }) {
   return (
@@ -28,7 +29,7 @@ export default function ArtCard({ artwork }: { artwork: ArtObject }) {
 
       <div className="w-full aspect-[4/3] overflow-hidden mt-4">
         {artwork.image ? (
-          <img
+          <Image
             src={artwork.image}
             alt={artwork.title || "Artwork image"}
             className="w-full h-full object-cover"

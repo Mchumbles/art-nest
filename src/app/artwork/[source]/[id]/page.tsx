@@ -4,6 +4,7 @@ import { fetchMetArtById } from "@/lib/api/met/fetchMetArtById";
 import { fetchVamArtById } from "@/lib/api/vam/fetchVamArtById";
 import { ArtObject } from "@/types/artworks";
 import Loading from "@/components/Loading";
+import Image from "next/image";
 
 type Params = {
   params: {
@@ -70,7 +71,7 @@ export default async function ArtworkPage({ params }: Params) {
 
       {artwork.image && (
         <figure className="mt-6">
-          <img
+          <Image
             src={artwork.image}
             alt={artwork.title || "Artwork image"}
             className="max-w-full"
